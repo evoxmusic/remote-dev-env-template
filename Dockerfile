@@ -111,7 +111,8 @@ RUN mkdir -p /home/coder/.local/share/code-server/User \
   "remote.autoForwardPorts": true,
   "remote.autoForwardPortsSource": "process",
   "claudeCode.preferredLocation": "sidebar",
-  "claudeCode.hideOnboarding": true
+  "claudeCode.hideOnboarding": true,
+  "extensions.supportNodeGlobalNavigator": true
 }
 SETTINGS
 
