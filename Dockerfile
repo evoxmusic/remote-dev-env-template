@@ -165,6 +165,6 @@ RUN chmod +x /usr/local/bin/entrypoint.sh \
 
 WORKDIR /home/coder/project
 
-EXPOSE 8080
+EXPOSE 8080 9100
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]

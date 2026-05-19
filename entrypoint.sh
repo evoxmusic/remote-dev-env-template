@@ -10,11 +10,13 @@
 #   GIT_USER_NAME   — Git author name for commits
 #   GIT_USER_EMAIL  — Git author email for commits
 #   DEV_PORT        — Port for the auto-started dev server (default: 3100)
+#   OPENCODE_PORT   — Port for the OpenCode web UI (default: 9100)
 #   DISABLE_CODE_SERVER — Set to "true" to skip code-server and serve an RDE welcome page instead
 set -e
 
 PROJECT_DIR="/home/coder/project"
 DEV_PORT="${DEV_PORT:-3100}"
+OPENCODE_PORT="${OPENCODE_PORT:-9100}"
 
 # ── Fix /home/coder ownership when a volume is mounted at /home ──────────────
 # Volume mounts override build-time ownership, leaving /home/coder owned by root.
@@ -713,6 +715,10 @@ NODEV
 </html>
 ENDHTML
 
+  # ── Start OpenCode web UI ───────────────────────────────────────────────────
+  echo "Starting OpenCode web UI on port ${OPENCODE_PORT}..."
+  (cd "$PROJECT_DIR" && opencode web --port "${OPENCODE_PORT}" >> /tmp/opencode-web.log 2>&1) &
+
   echo "Code-server disabled (DISABLE_CODE_SERVER=true)."
   echo "Serving RDE welcome page on port 8080..."
   cd "$rde_dir"
@@ -723,6 +729,10 @@ ENDHTML
 if [[ "${DISABLE_CODE_SERVER:-}" == "true" ]]; then
   start_welcome_server
 else
+  # ── Start OpenCode web UI ───────────────────────────────────────────────────
+  echo "Starting OpenCode web UI on port ${OPENCODE_PORT}..."
+  (cd "$PROJECT_DIR" && opencode web --port "${OPENCODE_PORT}" >> /tmp/opencode-web.log 2>&1) &
+
   echo "Starting Builder Workspace..."
   exec code-server --host 0.0.0.0 --port 8080 "$PROJECT_DIR"
 fi
